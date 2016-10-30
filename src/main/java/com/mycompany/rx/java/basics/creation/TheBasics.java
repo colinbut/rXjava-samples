@@ -7,7 +7,11 @@ package com.mycompany.rx.java.basics.creation;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Action0;
 import rx.functions.Action1;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TheBasics {
 
@@ -63,6 +67,33 @@ public class TheBasics {
 
     }
 
+    public static void creatingObservablesUsingJustWithActions() {
+        Observable<String> observable = Observable.just("Hellooooo");
+
+        Action1<String> onNextAction = new Action1<String>() {
+            @Override
+            public void call(String s) {
+                System.out.println(s);
+            }
+        };
+
+        Action1<Throwable> onErrorAction = new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                System.out.println("Error");
+            }
+        };
+
+        Action0 onCompletedAction = new Action0() {
+            @Override
+            public void call() {
+                System.out.println("Completed!");
+            }
+        };
+
+        observable.subscribe(onNextAction, onErrorAction, onCompletedAction);
+    }
+
     public static void creatingObservablesUsingJustWithMethodChaining() {
         Observable.just("The Basics")
             .subscribe(new Action1<String>() {
@@ -73,11 +104,33 @@ public class TheBasics {
             });
     }
 
+    public static void creatingObservablesUsingFrom() {
+        List<String> names = new ArrayList<String>(){
+            {
+                add("Lewis");
+                add("Nico");
+                add("Sebastian");
+                add("Max");
+                add("Daniel");
+                add("Kimi");
+            }
+        };
+
+        Observable.from(names).subscribe(new Action1<String>() {
+            @Override
+            public void call(String s) {
+                System.out.println("Observed: " + s);
+            }
+        });
+    }
+
 
     public static void main(String[] args) {
         TheBasics.creatingObservablesUsingCreate();
         TheBasics.creatingObservablesUsingJust();
+        TheBasics.creatingObservablesUsingJustWithActions();
         TheBasics.creatingObservablesUsingJustWithMethodChaining();
+        TheBasics.creatingObservablesUsingFrom();
     }
 
 }
