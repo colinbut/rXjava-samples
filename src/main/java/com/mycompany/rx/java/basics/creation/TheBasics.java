@@ -105,6 +105,8 @@ public class TheBasics {
     }
 
     public static void creatingObservablesUsingFrom() {
+
+        // from Collection
         List<String> names = new ArrayList<String>(){
             {
                 add("Lewis");
@@ -120,6 +122,16 @@ public class TheBasics {
             @Override
             public void call(String s) {
                 System.out.println("Observed: " + s);
+            }
+        });
+
+        // from array
+        Integer[] integers = {1,2,5,7,8};
+        Observable.from(integers)
+        .subscribe(new Action1<Integer>() {
+            @Override
+            public void call(Integer integer) {
+                System.out.println(integer);
             }
         });
     }
