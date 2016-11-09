@@ -9,6 +9,7 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action0;
 import rx.functions.Action1;
+import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,6 +105,42 @@ public class TheBasics {
             });
     }
 
+    public static void creatingObservablesUsingJustEmittingPojos() {
+        class User {
+            private final String forename;
+            private final String lastname;
+
+            public User(String forename, String lastname) {
+                this.forename = forename;
+                this.lastname = lastname;
+            }
+
+            public String getForename() {
+                return forename;
+            }
+
+            public String getLastname() {
+                return lastname;
+            }
+        }
+
+        // emitting a POJO
+        Observable.just(new User("Colin", "But"))
+            .map(new Func1<User, String>() {
+                @Override
+                public String call(User user) {
+                    return user.getForename() + " " + user.getLastname();
+                }
+            })
+            .subscribe(new Action1<String>() {
+                @Override
+                public void call(String s) {
+                    System.out.println(s);
+                }
+            });
+
+    }
+
     public static void creatingObservablesUsingFrom() {
 
         // from Collection
@@ -143,6 +180,7 @@ public class TheBasics {
         TheBasics.creatingObservablesUsingJustWithActions();
         TheBasics.creatingObservablesUsingJustWithMethodChaining();
         TheBasics.creatingObservablesUsingFrom();
+        TheBasics.creatingObservablesUsingJustEmittingPojos();
     }
 
 }
