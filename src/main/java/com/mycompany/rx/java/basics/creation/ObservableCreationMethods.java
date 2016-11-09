@@ -14,7 +14,7 @@ import rx.functions.Func1;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TheBasics {
+public class ObservableCreationMethods {
 
 
     /**
@@ -175,12 +175,12 @@ public class TheBasics {
 
 
     public static void main(String[] args) {
-        TheBasics.creatingObservablesUsingCreate();
-        TheBasics.creatingObservablesUsingJust();
-        TheBasics.creatingObservablesUsingJustWithActions();
-        TheBasics.creatingObservablesUsingJustWithMethodChaining();
-        TheBasics.creatingObservablesUsingFrom();
-        TheBasics.creatingObservablesUsingJustEmittingPojos();
+        ObservableCreationMethods.creatingObservablesUsingCreate();
+        ObservableCreationMethods.creatingObservablesUsingJust();
+        ObservableCreationMethods.creatingObservablesUsingJustWithActions();
+        ObservableCreationMethods.creatingObservablesUsingJustWithMethodChaining();
+        ObservableCreationMethods.creatingObservablesUsingFrom();
+        ObservableCreationMethods.creatingObservablesUsingJustEmittingPojos();
     }
 
 }
