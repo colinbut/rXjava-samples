@@ -12,10 +12,33 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ObservableCreationMethods {
 
+
+    /**
+     * An implementation of the Observable.from method
+     */
+    public static <T> Observable<T> fromIterable(final Iterable<T> iterable) {
+        return Observable.create(new Observable.OnSubscribe<T>() {
+            @Override
+            public void call(Subscriber<? super T> subscriber) {
+
+                try {
+                    Iterator<T> iterator = iterable.iterator();
+                    while (iterator.hasNext()) {
+                        subscriber.onNext(iterator.next());
+                    }
+                    subscriber.onCompleted();
+                } catch (Exception e) {
+                    subscriber.onError(e);
+                }
+
+            }
+        });
+    }
 
     /**
      * These are 'custom' observables
