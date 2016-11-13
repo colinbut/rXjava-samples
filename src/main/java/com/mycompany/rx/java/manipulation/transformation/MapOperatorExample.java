@@ -5,6 +5,7 @@
  */
 package com.mycompany.rx.java.manipulation.transformation;
 
+import com.mycompany.rx.java.util.SubscriptionPrint;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -68,12 +69,30 @@ public class MapOperatorExample {
             });
     }
 
+    public static void evenOrOdd() {
+        Observable<String> mappedObservable = Observable.just(2,3,4,5,8)
+            .map(new Func1<Integer, Integer>() {
+                @Override
+                public Integer call(Integer integer) {
+                    return integer * 3;
+                }
+            })
+            .map(new Func1<Integer, String>() {
+                @Override
+                public String call(Integer integer) {
+                    return (integer % 2 == 0) ? "even" : "odd";
+                }
+            });
+        SubscriptionPrint.displaySubscription(mappedObservable, "map");
+    }
+
 
 
     public static void main(String[] args) {
         map();
         mapToDifferentTypeThanOriginalSource();
         mapTransformedTypeBackToOriginalType();
+        evenOrOdd();
     }
 
 }
