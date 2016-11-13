@@ -3,7 +3,7 @@
  * | Copyright © 2016 Colin But. All rights reserved. 
  * |-------------------------------------------------
  */
-package com.mycompany.rx.java.basics.creation;
+package com.mycompany.rx.java.creation;
 
 import rx.Observable;
 import rx.Subscription;

@@ -3,7 +3,7 @@
  * | Copyright © 2016 Colin But. All rights reserved. 
  * |-------------------------------------------------
  */
-package com.mycompany.rx.java.basics.transformation.operators;
+package com.mycompany.rx.java.manipulation.transformation;
 
 import rx.Observable;
 import rx.functions.Action1;
