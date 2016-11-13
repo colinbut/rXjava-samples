@@ -5,10 +5,9 @@
  */
 package com.mycompany.rx.java.creation;
 
+import com.mycompany.rx.java.util.SubscriptionPrint;
 import rx.Observable;
 import rx.Subscription;
-import rx.functions.Action0;
-import rx.functions.Action1;
 import rx.observables.ConnectableObservable;
 
 import java.util.concurrent.TimeUnit;
@@ -28,36 +27,13 @@ import java.util.concurrent.TimeUnit;
  */
 public class HotColdObservables {
 
-    public static <T> Subscription subscribePrint(Observable<T> observable, final String name) {
-        return observable.subscribe(new Action1<T>() {
-                                        @Override
-                                        public void call(T t) {
-                                            System.out.println(name + ":" + t);
-                                        }
-                                    },
-            new Action1<Throwable>() {
-                @Override
-                public void call(Throwable throwable) {
-                    System.err.println("Error from " + name + ":");
-                    System.err.println(throwable.getMessage());
-                }
-            },
-            new Action0() {
-                @Override
-                public void call() {
-                    System.out.println(name + " ended!");
-                }
-            });
-
-    }
-
 
     public static void hotObservableUsingConnect() {
         Observable<Long> interval = Observable.interval(100L, TimeUnit.MILLISECONDS);
         ConnectableObservable<Long> published = interval.publish(); // can use replay
 
-        Subscription subscription1 = subscribePrint(published, "First");
-        Subscription subscription2 = subscribePrint(published, "Second");
+        Subscription subscription1 = SubscriptionPrint.getSubscription(published, "First");
+        Subscription subscription2 = SubscriptionPrint.getSubscription(published, "Second");
 
         published.connect(); // becoming a 'Hot Observable'
 
@@ -65,7 +41,7 @@ public class HotColdObservables {
 
         try {
             Thread.sleep(500L);
-            subscription3 = subscribePrint(published, "Third");
+            subscription3 = SubscriptionPrint.getSubscription(published, "Third");
             Thread.sleep(500L);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -90,15 +66,15 @@ public class HotColdObservables {
     public static void hotObservableOnFirstSubscription() {
         // note that share() method is an alias for publish().refCount()
         Observable<Long> refCount = Observable.interval(100L, TimeUnit.MILLISECONDS).publish().refCount();
-        Subscription subscription1 = subscribePrint(refCount, "First");
-        Subscription subscription2 = subscribePrint(refCount, "Second");
+        Subscription subscription1 = SubscriptionPrint.getSubscription(refCount, "First");
+        Subscription subscription2 = SubscriptionPrint.getSubscription(refCount, "Second");
 
         pause(300L);
 
         subscription1.unsubscribe();
         subscription2.unsubscribe(); // the hot observable will be deactivated here
 
-        Subscription subscription3 = subscribePrint(refCount, "Third"); // reactivated but emit from beginning again
+        Subscription subscription3 = SubscriptionPrint.getSubscription(refCount, "Third"); // reactivated but emit from beginning again
 
         pause(300L);
 

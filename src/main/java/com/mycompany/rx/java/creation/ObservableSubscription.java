@@ -5,11 +5,10 @@
  */
 package com.mycompany.rx.java.creation;
 
+import com.mycompany.rx.java.util.SubscriptionPrint;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.functions.Action0;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 import java.io.IOException;
@@ -53,35 +52,13 @@ public class ObservableSubscription {
         });
     }
 
-    public static <T> Subscription subscribePrint(Observable<T> observable, final String name) {
-        return observable.subscribe(new Action1<T>() {
-                                 @Override
-                                 public void call(T t) {
-                                     System.out.println(name + ":" + t);
-                                 }
-                             },
-            new Action1<Throwable>() {
-                @Override
-                public void call(Throwable throwable) {
-                    System.err.println("Error from " + name + ":");
-                    System.err.println(throwable.getMessage());
-                }
-            },
-            new Action0() {
-                @Override
-                public void call() {
-                    System.out.println(name + " ended!");
-                }
-            });
-
-    }
 
     public static void main(String[] args) throws IOException {
         Path path = Paths.get("src", "main", "resources", "lorem_big.txt");
         List<String> data = Files.readAllLines(path);
         Observable<String> observable = fromIterableWithSubscriptionChecking(data).subscribeOn(Schedulers.computation());
 
-        Subscription subscription = subscribePrint(observable, "File");
+        Subscription subscription = SubscriptionPrint.getSubscription(observable, "File");
         System.out.println("Before unsubcribe");
         subscription.unsubscribe();
         System.out.println("After unsubcribe");
